@@ -1,24 +1,31 @@
-import os
 import pandas as pd
 
-def drop_columns(df):
-    columns_to_drop = ['Unnamed: 0', 'payment_type_id', 'internet_service_type_id', 'contract_type_id', 'customer_id']
+def wrangle_telco_data(df):
+    """
+    Wrangles the Telco customer churn dataset.
+    
+    Args:
+    - df (DataFrame): The raw dataset.
+    
+    Returns:
+    - cleaned_df (DataFrame): The cleaned dataset.
+    """
+    # Drop unnecessary columns
+    columns_to_drop = ['column1', 'column2', ...]  # Replace with columns to drop
     df = df.drop(columns=columns_to_drop)
+    
+    # Convert total_charges column to numeric (if needed)
+    df['total_charges'] = pd.to_numeric(df['total_charges'], errors='coerce')
+    
+    # Convert binary categorical columns to numeric (e.g., 'Yes' to 1, 'No' to 0)
+    binary_columns = ['gender', 'partner', 'dependents', ...]  # Replace with relevant columns
+    df[binary_columns] = df[binary_columns].replace({'Yes': 1, 'No': 0})
+    
+    # Create dummy variables for categorical columns
+    categorical_columns = ['contract_type', 'internet_service_type', 'payment_type', ...]  # Replace with relevant columns
+    df = pd.get_dummies(df, columns=categorical_columns, drop_first=True)
+    
+    # Drop rows with missing values
+    df = df.dropna()
+    
     return df
-
-
-
-
-
-
-def change_dtype(df):
-    df.total_charges = df.total_charges.replace(' ', 0)
-    df.total_charges = df.total_charges.astype(float)
-    return df
-
-def impute_mode(train, validate, test):
-    imputer = SimpleImputer(fill_value= 'unknown', strategy='constant')
-    train[['churn']] = imputer.fit_transform(train[['churn']])
-    validate[['churn']] = imputer.transform(validate[['churn']])
-    test[['churn']] = imputer.transform(test[['churn']])
-    return train, validate, test
