@@ -22,12 +22,24 @@ Conclusion: Summarize findings, provide insights, and make recommendations to th
 
 
 Data Dictionary:
-gender: Gender of the customer (string)
-senior_citizen: Whether the customer is a senior citizen (0 or 1)
-partner: Whether the customer has a partner (string)
-dependents: Whether the customer has dependents (string)
-tenure: Number of months the customer has been with the company (integer)
-phone_service: Whether the customer has phone service (string)
+gender has 2 unique values: ['Female' 'Male']
+partner has 2 unique values: ['Yes' 'No']
+dependents has 2 unique values: ['Yes' 'No']
+phone_service has 2 unique values: ['Yes' 'No']
+multiple_lines has 3 unique values: ['No' 'Yes' 'No phone service']
+online_security has 3 unique values: ['No' 'Yes' 'No internet service']
+online_backup has 3 unique values: ['Yes' 'No' 'No internet service']
+device_protection has 3 unique values: ['No' 'Yes' 'No internet service']
+tech_support has 3 unique values: ['Yes' 'No' 'No internet service']
+streaming_tv has 3 unique values: ['Yes' 'No' 'No internet service']
+streaming_movies has 3 unique values: ['No' 'Yes' 'No internet service']
+paperless_billing has 2 unique values: ['Yes' 'No']
+total_charges has 6531 unique values: ['593.3' '542.4' '280.85' ... '742.9' '4627.65' '3707.6']
+churn has 2 unique values: ['No' 'Yes']
+contract_type has 3 unique values: ['One year' 'Month-to-month' 'Two year']
+internet_service_type has 3 unique values: ['DSL' 'Fiber optic' 'None']
+payment_type has 4 unique values: ['Mailed check' 'Electronic check' 'Credit card (automatic)'
+ 'Bank transfer (automatic)']
 
 
 

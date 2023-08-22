@@ -2,29 +2,38 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 def prepare_telco_data(df):
-    """
-    Prepares the Telco customer churn dataset.
-    
-    Args:
-    - df (DataFrame): The cleaned dataset.
-    
-    Returns:
-    - X_train (DataFrame): The features for the training set.
-    - X_validate (DataFrame): The features for the validation set.
-    - X_test (DataFrame): The features for the test set.
-    - y_train (Series): The target variable for the training set.
-    - y_validate (Series): The target variable for the validation set.
-    - y_test (Series): The target variable for the test set.
-    """
+    numeric_columns = []
+
+    for col in df.columns:
+        if pd.api.types.is_numeric_dtype(df[col]):
+            numeric_columns.append(col)
+
+    print(numeric_columns)
+
     # Select features and target variable
-    features = ['feature1', 'feature2', ...]  # Replace with relevant feature names
-    target = 'churn'
+    # Use .describe with object columns with the normalized value count 
+    # i did this to see the distribution of unique values
+    # and to understand the frequency and proportion of different values in the categorical columns
+
+    obj_cols = df.columns[[df[col].dtype == 'O' for col in df.columns]]  #'O' is for object
+    for col in obj_cols:
+        print(df[col].value_counts())
+        print(df[col].value_counts(normalize=True, dropna=False))
+        print('----------------------')
+        
+    #i want 20% test, 80% train-validate
+    #of the 80% train_validate, i have 30% validate, and 70% train
+    seed = 42 #this is a random state (number generator) so anyone can take my code and produce the same result 
+    train, test = train_test_split(df, test_size=.2, random_state=seed, stratify=df.churn) 
+    #stratifying the churn will maintain the same class distribution in both training and test dataset
+    #after i run this code, i will have two separate datasets: train and test, subset of df. 
+
+
+    train, validate = train_test_split(train, test_size=.3, random_state=seed, stratify=train.churn)
+    #this code will further split the train subset into train and validate with 30% validate and 70% train
     
-    X = df[features]
-    y = df[target]
-    
-    # Split the data into train, validate, and test sets
-    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
-    X_validate, X_test, y_validate, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
-    
-    return X_train, X_validate, X_test, y_train, y_validate, y_test
+    # after the split i want to validate my train so that my model perform well to unseen data
+    # validate will prevent overfitting, be able to experience different hyperparameter, 
+    print(f'train -> {train.shape}')
+    print(f'validate -> {validate.shape}')
+    print(f'test -> {test.shape}')
